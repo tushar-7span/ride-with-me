@@ -2,15 +2,19 @@ import { NextFunction,Request,Response } from 'express';
 import { bookingJoiSchema} from '../models/bookingModel';
 import logger from '../utils/logger'
 import {ValidationResult,Schema}from 'joi';
-import { driverJoiSchema } from '../models/driverModel';
+// import { driverJoiSchema } from '../models/driverModel';
 // import { customerJoiSchema } from '../models/customerModel';
 
 const schemas:Record<string,Schema> = {
   booking:bookingJoiSchema,
-  driver:driverJoiSchema,
+  // driver:driverJoiSchema,
   // user:userJoiSchema
 }
-const validateData = (model:string,data:any):ValidationResult=>{
+interface validateDataInput{
+  property1:string,
+  property2:number
+}
+const validateData = (model:string,data:validateDataInput):ValidationResult=>{
   const schema = schemas[model];
     if (!schema) {
         throw new Error("Schema not found for validation..")
@@ -29,4 +33,3 @@ next()
     logger.error(error);
   }
 };
-

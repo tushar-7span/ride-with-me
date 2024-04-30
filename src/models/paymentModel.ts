@@ -3,10 +3,10 @@ import mongoose, { Document } from "mongoose";
 export interface Payment extends Document {
   customer:mongoose.Schema.Types.ObjectId,
   booking:mongoose.Schema.Types.ObjectId,
-  amount:Number,
+  amount:number,
   paymentMethod:"card"| "cash" | "wallet",
   status:"pending" | "completed"| "failed",
-  transactionId:String,
+  transactionId:string,
 }
 
 const paymentSchema = new mongoose.Schema({

@@ -1,5 +1,5 @@
-import { Request, Response, response } from 'express';
-import  {bookingService}  from  '../services/bookingService';
+import { Request, Response } from 'express';
+import {bookingService} from '../services/bookingService';
 import logger from '../utils/logger';
 
 export const viewBooking = async (req:Request, res:Response)=> {

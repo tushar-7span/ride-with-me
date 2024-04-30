@@ -14,9 +14,15 @@ app.use("/api/v1", indexRoute);
 app.get("/",(req:Request,res:Response)=>{
   res.status(200).send("🚀Welcome to EasyGo-API 🚕..")
 })
-// Connect to MongoDB Atlas .
-connectDB();
+
 // Start the server
 app.listen(PORT, ():void => {
   logger.info(`🚀 Server is running.. on http://localhost:${PORT}🚀..`);
+  // Connect to MongoDB Atlas .
+  connectDB()
 });
+
+//unit testing demo
+export class App {
+  message = '🚀 Server is running.. on http://localhost:${PORT}🚀..';
+}
