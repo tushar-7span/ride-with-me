@@ -1,11 +1,15 @@
-import { Request, Response, NextFunction ,} from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT } from "../helper/constants";
 import logger from "../utils/logger";
 
+// interface AuthenticatedRequest extends Request {
+//   user?: JwtPayload;
+// }
+
 declare module "express" {
   interface Request {
-    user?: JwtPayload;
+    user?: JwtPayload; 
   }
 }
 
@@ -15,28 +19,24 @@ const verifyToken = (req: Request, res: Response,next: NextFunction) => {
       req.headers["authorization"] || req.headers["Authorization"];
     const token = (authHeader as string)?.split(" ")[1];
     if (!token) {
-      return res.status(401).json({
+      logger.info("NO TOKEN FOUND")
+      return res.status(404).json({
         success: false,
-        message: "No Token Found",
+        messaage: "No Token Found",
       });
     }
-    try {
-      const decode = jwt.verify(token, JWT.SECRET) as JwtPayload;
+    const decode = jwt.verify(token, JWT.SECRET) as JwtPayload;
       if (!decode.role) {
-        return res.status(401).json({
+        logger.info("UNABLE TO DECODE TOKEN")
+        return res.status(404).json({
           success: false,
           message: "Unable to Decode Token",
         });
       }
       req.user = decode;
       next();
-    } catch (error) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Token",
-      });
-    }
   } catch (error) {
+    logger.error("AN ERROR OCCURED WHILE VERIFYING TOKEN!! ",error)
     return res.status(500).json({
       success: false,
       message: "Error occured at verifying Token",
@@ -44,9 +44,10 @@ const verifyToken = (req: Request, res: Response,next: NextFunction) => {
   }
 };
 
-const isDriver = (req: Request,res: Response,next: NextFunction) => {
+const isDriver = (req: Request ,res: Response,next: NextFunction) => {
   try {
     if (req.user?.role !== "driver") {
+      logger.warn("PROTECTED ROUTE FOR DRIVER ONLY")
       return res.status(401).json({
         success: false,
         message: "Protected routes for driver only",
@@ -54,7 +55,7 @@ const isDriver = (req: Request,res: Response,next: NextFunction) => {
     }
     next();
   } catch (error) {
-    logger.error(error);
+    logger.error("ERROR OCCURED AT ISDRIVER MIDDLEWARE",error);
     return res.status(500).json({
       success: false,
       data: "Error occured at isDriver",
@@ -62,26 +63,22 @@ const isDriver = (req: Request,res: Response,next: NextFunction) => {
   }
 };
 
-const isAdmin = (req: Request, res:Response,next: NextFunction) => {
+const isAdmin = (req:Request, res: Response,next: NextFunction) => {
   try {
-    if (!req.user) {
+    if (req.user?.role !== "admin") {
+      logger.warn("PROTECTED ROUTE FOR ADMIN ONLY")
       return res.status(401).json({
         success: false,
-        message: "User not found",
-      });
-    }
-    if (req.user.role !== "admin") {
-      return res.status(401).json({
-        success: false,
-        message:`Sorry It's Protected for ${req.user.role}`,
+        message: "Protected routes for admin only",
       });
     }
     next();
   } catch (error) {
+    logger.error("ERROR OCCURED AT ISADMIN MIDDLEWARE",error);
     logger.error(error);
     return res.status(500).json({
       success: false,
-      message: "Error occured"+ error,
+      message: "Error occured at isAdmin",
     });
   }
 };
@@ -89,6 +86,7 @@ const isAdmin = (req: Request, res:Response,next: NextFunction) => {
 const isUser = (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.user?.role !== "user") {
+      logger.warn("PROTECTED ROUTE FOR USER ONLY")
       return res.status(401).json({
         success: false,
         message: "Protected routes for user only",
@@ -96,6 +94,7 @@ const isUser = (req: Request, res: Response, next: NextFunction) => {
     }
     next();
   } catch (error) {
+    logger.error("ERROR OCCURED AT ISUSER MIDDLEWARE",error);
     return res.status(500).json({
       success: false,
       data: "Error occured at isUser",

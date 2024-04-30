@@ -1,27 +1,20 @@
 {
-  "name": "ridewithme",
+  "name": "rideme",
   "version": "1.0.0",
   "description": "bike taxi booking web applications",
   "type": "module",
   "main": "app.js",
-  "engines": {
-    "node": ">=16"
-  },
   "scripts": {
+    "lint": "eslint . --ext .ts",
     "start": "rmdir /s /q dist && tsc-watch --onSuccess \"npm run watch\"",
-    "deploy": "tsc-watch --onSuccess \"npm run watch\"",
-    "dev": "nodemon src/app.ts",
     "watch": "nodemon --watch './**/*.{ts}' --exec node --experimental-specifier-resolution=node --loader ts-node/esm src/app.ts",
-    "build": "rimraf dist && npx tsc",
-    "prod": "tsc && node --es-module-specifier-resolution=node dist/app.js",
-    "lint": "eslint src/**/*.ts --fix"
+    "build": "tsc",
+    "prod": "tsc && node --es-module-specifier-resolution=node dist/app.js"
   },
   "author": "7Span Interns",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.552.0",
-    "@aws-sdk/s3-request-presigner": "^3.552.0",
-    "@types/tsc-watch": "^4.2.3",
+    "@types/socket.io": "^3.0.2",
     "@types/winston": "^2.4.4",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -30,7 +23,9 @@
     "joi": "^17.12.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.2",
-    "twilio": "^5.0.3",
+    "node-cron": "^3.0.3",
+    "pre-commit": "^1.2.2",
+    "twilio": "^5.0.1",
     "winston": "^3.13.0"
   },
   "devDependencies": {
@@ -41,13 +36,11 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.11.30",
+    "@types/node-cron": "^3.0.11",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
     "nodemon": "^3.1.0",
-    "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
     "tsc-watch": "^6.0.4",

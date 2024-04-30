@@ -1,6 +1,6 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
-export interface Customer extends Document{
+export interface Customer{
     name: string;
     email: string;
     phoneNumber: string;
@@ -50,7 +50,7 @@ const CustomerSchema = new mongoose.Schema<Customer>(
     },
     { timestamps: true }
   );
-
+  
   CustomerSchema.index({location: "2dsphere"})
 
   export default mongoose.model<Customer>("Customer", CustomerSchema);

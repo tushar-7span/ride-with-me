@@ -1,10 +1,5 @@
-import mongoose, { Document } from 'mongoose';
-import Joi from 'joi';
+import mongoose,{Document} from 'mongoose';
 
-interface ImageObject {
-  name: string;
-  imageUrl: string;
-}
 export interface driver extends Document {
   name: string;
   email: string; 
@@ -12,8 +7,10 @@ export interface driver extends Document {
   availability: boolean;
   role: string; 
   token: string; 
-  isVerify: boolean;
-  images: ImageObject[];
+  location: {
+    type: string; 
+    coordinates: [number, number];
+};
 }
 
 const driverSchema = new mongoose.Schema<driver>({
@@ -41,31 +38,17 @@ const driverSchema = new mongoose.Schema<driver>({
   token: {
     type: String,
   },
-  isVerify: {
-    type: Boolean,
-    default: false
-  },
-  images: [
-    {
-      name: { type: String, required: true },
-      imageUrl: { type: String, required: true }
-    }
-  ],
+  location: {
+    type: { 
+      type: String, 
+      default: "Point" }, 
+    coordinates: {
+      type: [Number],
+      index: "2dsphere"
+    }, //long, lat
+},
 });
 
-const phonePattern = /^(0|91)?[6-9][0-9]{9}$/
-export const driverJoiSchema = Joi.object({
-  name: Joi.string().min(3).max(30).required(),
-  email: Joi.string().email().required(),
-  phoneNumber: Joi.string().min(10).max(10).regex(phonePattern).required(),
-  role: Joi.string().default('driver'),
-});
-
-export const updateDriverSchema = Joi.object({
-  name: Joi.string().min(3).max(30),
-  email: Joi.string().email(),
-  role: Joi.string(),
-});
-
+driverSchema.index({location: "2dsphere"})
 
 export default mongoose.model<driver>("driver", driverSchema);

@@ -1,5 +1,5 @@
 import { RootQuerySelector, UpdateQuery } from "mongoose";
-import  driverSchema, { driver } from '../models/driverModel';
+import  driverSchema from '../models/driverModel';
 import tempAuthSchema, {tempAuth} from "../models/tempAuthModal";
 import logger from "../utils/logger";
 
@@ -89,7 +89,7 @@ const removeTempUser = async (query: string) => {
 
 const availableDrivers = async () => {
   try {
-    return await driverSchema.find({ availability:true }).select('name').select('phoneNumber')
+    return await driverSchema.find({ availability:true })
   } catch (error) {
     logger.error(error)
     throw error;
