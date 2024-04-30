@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 import Joi from 'joi';
 
-interface ImageObject {
+export interface ImageObject {
   name: string;
   imageUrl: string;
 }
@@ -12,7 +12,7 @@ export interface driver extends Document {
   availability: boolean;
   role: string; 
   token: string; 
-  isVerify: boolean;
+  isVerified: boolean;
   images: ImageObject[];
 }
 
@@ -21,7 +21,7 @@ const driverSchema = new mongoose.Schema<driver>({
     type: String,
     required:true
   },
-  email: {
+  email: {  
     type: String,
     unique: true
   },
@@ -41,7 +41,7 @@ const driverSchema = new mongoose.Schema<driver>({
   token: {
     type: String,
   },
-  isVerify: {
+  isVerified: {
     type: Boolean,
     default: false
   },

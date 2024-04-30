@@ -18,10 +18,9 @@ import {
   availableDrivers,
   imageUpload,
 } from "../controllers/driverController";
-import { validateRequest } from "../validation/joiValidation";
 
 
-router.post("/register",validateRequest, signUp);
+router.post("/register", signUp);
 // router.post("/register", validateRequest, signUp);
 router.post("/verify-otp", verifyOtp);
 router.post("/send-login-otp", sendLoginOtp);

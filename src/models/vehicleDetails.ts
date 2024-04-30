@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import Joi from "joi";
 
-interface driver {
+export interface driver {
   _id: mongoose.Schema.Types.ObjectId;
 }
-interface vehicle {
+export interface vehicle {
   model: string; 
   year: number;
   licensePlate: string;

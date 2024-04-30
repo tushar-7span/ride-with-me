@@ -1,27 +1,16 @@
-import  vehicleDetails  from '../models/vehicleDetails';
+import {RootQuerySelector, UpdateQuery } from "mongoose";
+import vehicleDetails, {vehicle} from '../models/vehicleDetails';
 
-const findVehicle = async (query: any) => { 
-  try {
+const findVehicle = async (query: RootQuerySelector<vehicle>) => { 
     return await vehicleDetails.findOne(query);
-  } catch (error) {
-    throw error;
-  }
 };
 
-const addVehicle = async (query: any) => {
-  try {
+const addVehicle = async (query: RootQuerySelector<vehicle>) => {
     return await vehicleDetails.create(query);
-  } catch (error) {
-    throw error;
-  }
 };
 
-const updateVehicleDetails = async (id: string, query: any) => {
-  try {
+const updateVehicleDetails = async (id: string, query: UpdateQuery<vehicle>) => {
     return await vehicleDetails.findByIdAndUpdate(id, query);
-  } catch (error) {
-    throw error;
-  }
 };
 
 export const vehicleService =  {findVehicle,addVehicle,updateVehicleDetails}

@@ -1,10 +1,10 @@
-import { Request, Response, response } from 'express';
-import  {driverService}  from '../services/driverService';
-import { TWILIO } from "../helper/constants";
-import twilio from "twilio";
-import jwtToken from "../helper/jwtToken";
-import logger from "../utils/logger";
-const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
+// import { Request, Response, response } from 'express';
+// import  {driverService}  from '../services/driverService';
+// import { TWILIO } from "../helper/constants";
+// import twilio from "twilio";
+// import jwtToken from "../helper/jwtToken";
+// import logger from "../utils/logger";
+// const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 
 // const signUp = async (req: Request, res: Response) => {
 //   try {
@@ -92,19 +92,19 @@ const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 //           name: existUserTemp.name,
 //           email: existUserTemp.email,
 //           phoneNumber: existUserTemp.phoneNumber,
-//           role: 'driver',
+//           role: existUserTemp.role,
 //         });
 //         await newUser?.save();
 //         await driverService.removeTempUser(existUserTemp.id);
 //       }
 //     }
 //     return res.status(201).json({
-//       isLogin: true,
+//       success: true,
 //       message: "Successfully Verified and Registered ",
 //     });
 //   } catch (error) {
 //     return res.status(500).json({
-//       isLogin:false,
+//       success: false,
 //       message: error
 //     });
 //   }
@@ -138,7 +138,7 @@ const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 //     } catch (error) {
 //       logger.error(error)
 //       return res.status(500).json({
-//         isLogin: false,
+//         success: false,
 //         message: "Failed to Send OTP, "+ error,
 //       });
 //     }
@@ -164,7 +164,7 @@ const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 //       const existUser = await driverService.findDriver({ phoneNumber });
 //       if (!existUser) {
 //         return res.status(400).json({
-//           isLogin: false,
+//           success: false,
 //           message: "Oops!! Sign-Up first",
 //         });
 //       } else {
@@ -174,7 +174,6 @@ const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 //           .cookie("token", token, { maxAge: 3 * 24 * 60 * 60 * 1000, httpOnly:true })
 //           .status(200).json({
 //             success: true,
-//             token,
 //             message: "User Logged in successfully",
 //           });
 //       }
@@ -182,8 +181,8 @@ const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 //   } catch (error) {
 //     logger.error(error)
 //     return res.status(500).json({
-//       isLogin: false,
-//       message: `Error in Login:`+ error,
+//       success: false,
+//       message: error,
 //     });
 //   }
 // };
@@ -191,6 +190,8 @@ const client = twilio(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
 // export { signUp, verifyOtp, sendLoginOtp, login };
 
 
+import { Request, Response } from 'express';
+import  {driverService}  from '../services/driverService';
 
 const STATIC_PHONE_NUMBER = "9999999999";
 const STATIC_OTP = "9999";
@@ -292,4 +293,5 @@ const login = async (req: Request, res: Response) => {
     });
   }
 };
+
 export { signUp, verifyOtp, sendLoginOtp, login };
